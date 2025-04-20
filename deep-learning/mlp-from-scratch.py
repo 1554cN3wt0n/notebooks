@@ -85,6 +85,7 @@ def _(np):
 
 @app.cell
 def update_params():
+    # Update paramenters based on the gradients and the learning rate
     def update_params(params,dparams,lr=0.1):
         new_params = []
         for p,dp in zip(params,dparams):
@@ -121,57 +122,43 @@ def _(backward, forward, loss_fn, update_params):
 
 @app.cell
 def _(forward, init_parameters, load_iris, np, train, train_test_split):
-    def iris_data():
-        # Loading data
-        raw_data = load_iris()
-        x, y = raw_data.data, raw_data.target
+    # Loading data
+    _raw_data = load_iris()
+    _x, _y = _raw_data.data, _raw_data.target
 
-        # Splitting data in train and test dataset
-        train_x, test_x, train_y, test_y = train_test_split(x,y,train_size=0.8)
+    # Splitting data in train and test dataset
+    _train_x, _test_x, _train_y, _test_y = train_test_split(_x,_y,train_size=0.8)
 
-        # input_size = 4
-        # hidden_neurons = 5
-        # num_classes = 3
-        params = init_parameters(4,5,3)
-        params, history = train(params, train_x, train_y, epochs=1000, lr=0.001)
+    # input_size = 4
+    # hidden_neurons = 5
+    # num_classes = 3
+    _params = init_parameters(4,5,3)
+    _params, _history = train(_params, _train_x, _train_y, epochs=1000, lr=0.001)
 
-        _,_,_,out = forward(test_x, params)
-        print("predicted classes", np.argmax(out,axis=1))
-        print("ground classes   ", test_y)
-    return (iris_data,)
-
-
-@app.cell
-def _(iris_data):
-    iris_data()
+    _,_,_,_out = forward(_test_x, _params)
+    print("predicted classes", np.argmax(_out,axis=1))
+    print("ground classes   ", _test_y)
     return
 
 
 @app.cell
 def _(forward, init_parameters, load_digits, np, train, train_test_split):
-    def digits_data():
-        # Loading data
-        raw_data = load_digits()
-        x, y = raw_data.data, raw_data.target
-    
-        # Splitting data in train and test dataset
-        train_x, test_x, train_y, test_y = train_test_split(x,y,train_size=0.8)
+    # Loading data
+    _raw_data = load_digits()
+    _x, _y = _raw_data.data, _raw_data.target
 
-        # input_size = 64
-        # hidden_neurons = 128
-        # num_classes = 10
-        params = init_parameters(64,32,10)
-        params, history = train(params, train_x, train_y, epochs=1000, lr=0.001)
+    # Splitting data in train and test dataset
+    _train_x, _test_x, _train_y, _test_y = train_test_split(_x,_y,train_size=0.8)
 
-        _,_,_,out = forward(test_x, params)
-        print("predicted classes", np.argmax(out,axis=1))
-        print("ground classes   ", test_y)
-    return (digits_data,)
+    # input_size = 64
+    # hidden_neurons = 128
+    # num_classes = 10
+    _params = init_parameters(64,32,10)
+    _params, _history = train(_params, _train_x, _train_y, epochs=1000, lr=0.001)
 
-
-@app.cell
-def _(digits_data):
-    digits_data()
+    _,_,_,_out = forward(_test_x, _params)
+    print("predicted classes", np.argmax(_out,axis=1))
+    print("ground classes   ", _test_y)
     return
 
 
